@@ -5,10 +5,15 @@
  ## ScreenShot Walkthrough
  Below is a detailed picture of the project : 
  
-  <img src="#"/>
-  <img src="#"/>
-  
- ## Sending using your gmail account
+ <img src="https://github.com/haithemnini/SpeedyMail/blob/main/VIEWS/Res/IMG/Email%20Configuration.png"/>
+ <img src="https://github.com/haithemnini/SpeedyMail/blob/main/VIEWS/Res/IMG/Sending%20Settings.png"/>
+ 
+ ## Using
+ 1. Clone this project.
+ 2. Download <code>libeay32.dll</code> and <code>ssleay32.dll</code> into a folder <code>SpeedyMail\DEPLOY\APP</code> After you do Compile for the project.
+ 3. Enjoy.
+
+ ## Sending Using your gmail account
   Using 2FA: I committed the password in the first place. Moreover, due to the use of 2FA on Gmail, you need to generate a valid token to be used with the connections on Google's SMTP server.
 
  ## Host SMTP
