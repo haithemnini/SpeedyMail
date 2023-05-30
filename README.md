@@ -5,8 +5,8 @@
  ## ScreenShot Walkthrough
  Below is a detailed picture of the project : 
  
-  <img src="#"/>
-  <img src="#"/>
+ <img src="https://github.com/haithemnini/SpeedyMail/blob/main/VIEWS/Res/IMG/Email%20Configuration.png"/>
+ <img src="https://github.com/haithemnini/SpeedyMail/blob/main/VIEWS/Res/IMG/Sending%20Settings.png"/>
   
  ## Sending using your gmail account
   Using 2FA: I committed the password in the first place. Moreover, due to the use of 2FA on Gmail, you need to generate a valid token to be used with the connections on Google's SMTP server.
