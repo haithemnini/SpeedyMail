@@ -20,10 +20,10 @@ uses
   Base.Lyt.Main in 'VIEWS\Abs\Base Lyt\Base.Lyt.Main.pas' {BaseLyt_Main},
   Lyt.Dimmer in 'VIEWS\Lyt\MainView Lyt\Other Lyt\Lyt.Dimmer.pas' {Lyt_Dimmer},
   Lyt.DlgMsg in 'VIEWS\Lyt\MainView Lyt\Other Lyt\Lyt.DlgMsg.pas' {Lyt_DlgMsg},
-  Lyt.Loading in 'VIEWS\Lyt\MainView Lyt\Other Lyt\Lyt.Loading.pas' {Lyt_Loading},
   Lyt.Msg in 'VIEWS\Lyt\MainView Lyt\Other Lyt\Lyt.Msg.pas' {Toast},
   Lyt.Config in 'VIEWS\Lyt\MainView Lyt\Lyt.Config.pas' {Lyt_Config},
   Lyt.Sending in 'VIEWS\Lyt\MainView Lyt\Lyt.Sending.pas' {Lyt_Sending},
+   Lyt.Loading in 'VIEWS\Lyt\MainView Lyt\Lyt.Loading.pas' {Lyt_Loading},
   Base.Main in 'VIEWS\Abs\Base.Main.pas' {BaseMain},
   Main in 'Main.pas' {fMain};
 
@@ -38,6 +38,7 @@ begin
   //dmAPI & dmRes
   Application.CreateForm(TdmAPI, dmAPI);
   Application.CreateForm(TdmRes, dmRes);
+  //dmAPI & dmRes
 
   Application.CreateForm(TfMain, fMain);
   Application.Run;

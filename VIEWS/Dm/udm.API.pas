@@ -27,6 +27,7 @@ type
     Act_Lyt_Sending: TAction;
     Act_SaveData: TAction;
     Act_SendEmail: TAction;
+    Act_1: TAction;
     procedure Act_CloseAPPExecute(Sender: TObject);
     procedure Act_MinimizeExecute(Sender: TObject);
     procedure Act_Lyt_ConfigExecute(Sender: TObject);
@@ -44,6 +45,8 @@ type
      procedure Set_Email(const aValue: string);
      procedure Set_Password(const aValue: string);
      procedure Set_TitleRecipient(const aValue: string);
+
+     function SendEmail(const ToMail, Subject, MsgSend: string; aStartProc, aFinishProc: TProc): Boolean;
   public  { Public declarations }
     property Host_SMTP      : string  read fHost_SMTP      write Set_Host_SMTP   ;
     property Port           : string  read fPort           write Set_Port ;
@@ -79,6 +82,7 @@ uses
 
 {$REGION '...SubBtns  '}
 
+
 procedure TdmAPI.Act_CloseAPPExecute(Sender: TObject);
 begin
  with (Application.MainForm as TBaseMain) do
@@ -92,6 +96,49 @@ begin
 end;
 
 {$ENDREGION}
+
+function TdmAPI.SendEmail(const ToMail, Subject, MsgSend: string; aStartProc, aFinishProc: TProc): Boolean;
+var
+  aEmail_Sender: TEmailSender;
+  ThreadResult: Boolean;
+begin
+  try
+    // Validate parameters
+    if (ToMail = '') or (Subject = '') or (MsgSend = '') or (not ValidateRegex(ToMail, Email_REGEX)) then
+    begin
+      // Handle invalid parameter(s) here
+      Result := False;
+      Exit;
+    end;
+
+    TThread.Queue(nil,
+     procedure
+      begin
+        if Assigned(aStartProc) then
+          aStartProc;
+      end
+    );
+
+    aEmail_Sender := TEmailSender.Create(Host_SMTP, Email, Password, TitleRecipient, Port.ToInteger);
+
+    try
+      ThreadResult := aEmail_Sender.Send(ToMail, Subject, MsgSend);
+
+      TThread.Queue(nil,
+       procedure
+        begin
+          if Assigned(aFinishProc) then
+            aFinishProc;
+        end
+      );
+      Result := ThreadResult;
+    finally
+      aEmail_Sender.Free;
+    end;
+  except
+    Result := False;
+  end;
+end;
 
 procedure TdmAPI.Act_Lyt_ConfigExecute(Sender: TObject);
 begin
@@ -132,69 +179,69 @@ begin
  end;
 end;
 
-
 procedure TdmAPI.Act_SendEmailExecute(Sender: TObject);
+var
+  ToMail, Subject, MsgSend: string;
+  Success: Boolean;
 begin
+  // Get values from UI elements
+  ToMail  := Trim((Application.MainForm as TBaseMain).Lyt_Sending.Edt_ToEmail.Text);
+  Subject := Trim((Application.MainForm as TBaseMain).Lyt_Sending.Edt_Subject.Text);
+  MsgSend := Trim((Application.MainForm as TBaseMain).Lyt_Sending.Edt_Msg.Text);
+
   TThread.CreateAnonymousThread(
     procedure
-    var
-      aEmail_Sender: TEmailSender;
-      ThreadResult: Boolean;
-      ToMail, Subject, MsgSend: string;
-      ValidationSuccess: Boolean; // Added Variable For Validation Success
     begin
-      TThread.Queue(nil,
-        procedure
+      Success := SendEmail(ToMail, Subject, MsgSend,
+       procedure
         begin
+          // Start procedure
+         {$REGION ' Start procedure  '}
           with (Application.MainForm as TBaseMain) do
           begin
-            // Get values from UI elements
-            ToMail  := Trim(Lyt_Sending.Edt_ToEmail.Text);
-            Subject := Trim(Lyt_Sending.Edt_Subject.Text);
-            MsgSend := Trim(Lyt_Sending.Edt_Msg.Text);
-
-            // Validate that the Email, subject, and message are not empty and the email address is in the correct format
-            ValidationSuccess := (ToMail <> '') and (Subject <> '') and (MsgSend <> '') and ValidateRegex(ToMail, Email_REGEX);
-            if not ValidationSuccess then Lyt_Msg.Show(Msg_ErrorEmpty, Tk_Warn);  Exit; // Exit The Function If Validation Fails
-
-            // Disable UI Elements And Show Loading Layout
+            // Disable UI elements and show loading layout
             Act_Lyt_Config.Enabled := False;
             Pnl_SubBtns.Enabled := False;
-//            LytRef[TLyt_Loading].ShowLayout;
+            LytRef[TLyt_Loading].ShowLayout;
           end;
+         {$ENDREGION}
+        end,
+       procedure
+        begin
+          // Finish procedure
+         {$REGION ' Finish procedure  '}
+         with (Application.MainForm as TBaseMain) do
+          begin
+            // Enable UI elements and show the sending layout
+            Act_Lyt_Config.Enabled := True;
+            Pnl_SubBtns.Enabled := True;
+            LytRef[TLyt_Sending].ShowLayout;
+          end;
+         {$ENDREGION}
         end
       );
 
-      if not ValidationSuccess then  Exit; // Exit The Function If Validation Fails (Added Check)
-
-      aEmail_Sender := TEmailSender.Create(Host_SMTP, Email, Password, TitleRecipient, Port.ToInteger);
-
-      try
-        ThreadResult := aEmail_Sender.Send(ToMail, Subject, MsgSend);
-
-        TThread.Queue(nil,
-          procedure
+      TThread.Queue(nil,
+        procedure
+        begin
+         with (Application.MainForm as TBaseMain) do
           begin
-            with (Application.MainForm as TBaseMain) do
-            begin
-              if ThreadResult then
-                Lyt_Msg.Show(Msg_SuccesSent, Tk_Success)
-              else
-                Lyt_Msg.Show(Msg_ErrorUnknown, Tk_Error);
-
-              // Enable UI elements and Show The sending layout
-              Act_Lyt_Config.Enabled := True;
-              Pnl_SubBtns.Enabled := True;
-              LytRef[TLyt_Sending].ShowLayout;
-            end;
-          end
-        );
-      finally
-        aEmail_Sender.Free;
-      end;
+            // Check the value and display appropriate message
+            if Success then
+              Lyt_Msg.Show(Msg_SuccesSent, Tk_Success)
+            else
+              Lyt_Msg.Show(Msg_ErrorUnknown, Tk_Error);
+          end;
+        end
+      );
     end
   ).Start;
 end;
+
+
+
+
+
 
 procedure TdmAPI.GetConfig_Email;
 begin

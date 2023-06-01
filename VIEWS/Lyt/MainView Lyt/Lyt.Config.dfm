@@ -132,7 +132,6 @@ inherited Lyt_Config: TLyt_Config
       ParentFont = False
       FluentUIOpaque = False
       TabOrder = 0
-      TabStop = True
       Action = dmAPI.Act_SaveData
       Animation = False
       Badge.Color = clRed

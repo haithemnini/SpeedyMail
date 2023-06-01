@@ -3,6 +3,8 @@ inherited Lyt_Sending: TLyt_Sending
   PixelsPerInch = 96
   TextHeight = 23
   inherited Pnl_Views: TPanel
+    ExplicitWidth = 761
+    ExplicitHeight = 515
     object Lbl_To: TsImgLabel
       AlignWithMargins = True
       Left = 17
@@ -84,7 +86,6 @@ inherited Lyt_Sending: TLyt_Sending
       ParentFont = False
       FluentUIOpaque = False
       TabOrder = 0
-      TabStop = True
       Action = dmAPI.Act_SendEmail
       Animation = False
       Badge.Color = clRed

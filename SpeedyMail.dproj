@@ -141,9 +141,6 @@
         <DCCReference Include="VIEWS\Lyt\MainView Lyt\Other Lyt\Lyt.DlgMsg.pas">
             <Form>Lyt_DlgMsg</Form>
         </DCCReference>
-        <DCCReference Include="VIEWS\Lyt\MainView Lyt\Other Lyt\Lyt.Loading.pas">
-            <Form>Lyt_Loading</Form>
-        </DCCReference>
         <DCCReference Include="VIEWS\Lyt\MainView Lyt\Other Lyt\Lyt.Msg.pas">
             <Form>Toast</Form>
         </DCCReference>
@@ -152,6 +149,9 @@
         </DCCReference>
         <DCCReference Include="VIEWS\Lyt\MainView Lyt\Lyt.Sending.pas">
             <Form>Lyt_Sending</Form>
+        </DCCReference>
+        <DCCReference Include="VIEWS\Lyt\MainView Lyt\Lyt.Loading.pas">
+            <Form>Lyt_Loading</Form>
         </DCCReference>
         <DCCReference Include="VIEWS\Abs\Base.Main.pas">
             <Form>BaseMain</Form>
@@ -187,12 +187,6 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="DEPLOY\APP\SpeedyMail.exe" Configuration="Debug" Class="ProjectOutput">
-                    <Platform Name="Win32">
-                        <RemoteName>SpeedyMail.exe</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="VIEWS\Res\IMG\SpeedyMail_150px.png" Configuration="Debug" Class="UWP_DelphiLogo150">
                     <Platform Name="Win32">
                         <RemoteDir>Assets\</RemoteDir>
@@ -204,6 +198,12 @@
                     <Platform Name="Win32">
                         <RemoteDir>Assets\</RemoteDir>
                         <RemoteName>Logo44x44.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="DEPLOY\APP\SpeedyMail.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>SpeedyMail.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

@@ -33,5 +33,8 @@ object dmAPI: TdmAPI
       Caption = 'Send'
       OnExecute = Act_SendEmailExecute
     end
+    object Act_1: TAction
+      Caption = 'Act_1'
+    end
   end
 end
